@@ -33,33 +33,51 @@ Hoặc dùng npm/yarn tương ứng.
 
 ```
 vexere-fe/
-├── app/                  # Next.js app directory (routing, page, layout, ...), chia module rõ ràng
-│   ├── auth/             # Các route xác thực: login, register
-│   ├── page.tsx          # Trang chính
-│   ├── layout.tsx        # Layout gốc
-│   └── ...
-├── components/           # UI components (shadcn/ui, custom component, provider, icon, ...)
-│   └── ui/               # Các component shadcn/ui (button, input, form, alert, ...)
-|__ feature               # CHUẨN HÓA: Gom cụm giao diện + logic biệt lập theo từng nghiệp vụ
-├── services/             # CHUẨN HÓA: Nơi quản lý các lớp giao tiếp dữ liệu (API Calls, SDK) tập trung
-├── constants/            # Các hằng số dùng chung (query key, schema, config, ...)
-├── hooks/                # Custom React hooks (logic dùng lại)
-|__ i18n/                 # Đa ngôn ngữ
-|__ messages              # Chứa các file JSON đa ngôn ngữ
-├── lib/                  # Helper, API client, utils
-│   ├── api/              # API helper (axios, ...)
-│   └── utils/            # Hàm tiện ích dùng lại
-├── types/                # TypeScript type, interface, enum
-│   ├── interfaces/       # Định nghĩa interface chung (API, model, ...)
-│   └── enums/            # Định nghĩa enum (nếu có)          #
-├── middleware.ts         # THÊM MỚI: Chặn và xử lý request (kiểm tra Token, phân quyền bảo mật route)
-├── __tests__/            # Unit test cho page, component, module
-├── public/               # Static assets (ảnh, favicon, ...)
-├── .gitlab-ci.yml        # CI config
-├── package.json
-├── tsconfig.json
-├── README.md             # Hướng dẫn sử dụng repo
-└── ...
+├── public/                 # Tài nguyên tĩnh (hình ảnh, icon, file locales thô của hệ thống)
+└── src/
+    ├── app/
+    │   └── [locale]/       # Thư mục gốc xử lý đa ngôn ngữ
+    │       ├── (public)/   # Nhóm Route công cộng (Không cần đăng nhập - Khách/Người dùng vãng lai)
+    │       │   ├── layout.tsx  # Chứa Header/Footer công cộng
+    │       │   ├── page.tsx    # Trang chủ Portal
+    │       ├── (customer)/   # Nhóm Route cần đăng nhập mới có thể sử dụng
+    │       ├── (admin)/   # Nhóm Route quản trị
+    │       ├── layout.tsx      # Root Layout bắt buộc của Next.js
+    │       └── error.tsx | loading.tsx | not-found.tsx
+    │
+    ├── features/           # Các Module Nghiệp Vụ Cô Lập (Domain-Driven Modules) - mỗi folder gồm api, component, hooks,services,type (nếu có) và file index.tsx
+    │
+    ├── shared/             # Hạ tầng lõi, không chứa trạng thái nghiệp vụ (Stateless Core)
+    │   ├── components/     # UI Component nguyên tử (Button, Modal, Table, Pagination, Breadcrumb)
+    │   ├── layouts/        # Giao diện layout tĩnh để các file layout của App Router import vào
+    │     |── constants/
+    │     |── enums/
+    │     |── validator/
+    │     |── utils/
+    │
+    ├── services/           # Tầng kết nối mạng toàn cục (Global Networking Layer)
+    │   ├── api-client/     # Cấu hình khởi tạo Axios/Fetcher instance
+    │   └── gateway/        # Điều hướng API Gateway và quản lý endpoint gốc
+    │
+    ├── store/              # Quản lý trạng thái toàn cục (Zustand/Redux)
+    │   └── [auth|customer|ui|notification].store.ts
+    │
+    ├── hooks/              # Các React custom hook dùng chung toàn hệ thống (useAuth, useLocale)
+    │   ├── i18n/           # Cấu hình định tuyến động của thư viện next-intl
+    │   ├── messages/       # Từ điển ngôn ngữ dạng JSON (vi.json, en.json)
+    │   ├── configs/        # File cấu hình app, map biến môi trường (.env), hằng số đường dẫn (routes)
+    │   ├── types/          # Định nghĩa kiểu dữ liệu chuẩn toàn cục (Common, API Responses, Pagination)
+    │   └── middleware.ts   # Pipeline xử lý điều hướng đa ngôn ngữ & bảo mật route (Auth Guard)
+    ├── .env.local
+    ├── .env.development
+    ├── .env.production
+    │
+    ├── next.config.ts
+    ├── tsconfig.json
+    ├── package.json
+    ├── eslint.config.mjs
+    ├── prettier.config.js
+    └── README.md
 ```
 
 ---
@@ -93,4 +111,5 @@ vexere-fe/
 
 - Đội ngũ phát triển: [Tên team/Slack/Email]
 - Đóng góp: Mở PR, tuân thủ quy tắc phát triển.
+
 # baseNextjs
