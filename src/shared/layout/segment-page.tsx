@@ -1,19 +1,21 @@
-import { BreadcrumbSegment } from "@/types/interfaces/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import Breadcrumbs from "../components/breadcrumbs";
+
+import { BreadcrumbSegment } from "@/types/interfaces/navigation";
+
+import { PageContent } from "./page-content";
 
 interface SegmentPageProps {
   params?: Promise<{ locale: string }>;
   translationKey?: string;
   breadcrumbSegments?: BreadcrumbSegment[];
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 export default async function SegmentPage({
   params,
-  translationKey = 'telecommunications',
+  translationKey = "telecommunications",
   breadcrumbSegments,
-  children
+  children,
 }: SegmentPageProps) {
   const t = await getTranslations(`pages.${translationKey}`);
 
@@ -23,14 +25,12 @@ export default async function SegmentPage({
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      {!!breadcrumbSegments && <div className="mb-4">
-        <Breadcrumbs segments={breadcrumbSegments} />
-      </div>}
-      <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-        {t("title")}
-      </h1>
+    <PageContent
+      breadcrumbSegments={breadcrumbSegments}
+      title={t("title")}
+      description={t("description")}
+    >
       {children}
-    </section>
+    </PageContent>
   );
 }
