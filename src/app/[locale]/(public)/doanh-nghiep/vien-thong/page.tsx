@@ -1,7 +1,10 @@
-import { createSegmentMetadata } from "@/lib/seo/create-page-metadata";
-import type { PageProps } from "@/types/interfaces/common";
-import SegmentPage from "@/shared/layout/segment-page";
 import configs from "@/constants/config";
+import SegmentPage from "@/shared/layout/segment-page";
+
+import type { PageProps } from "@/types/interfaces/common";
+import { createSegmentMetadata } from "@/lib/seo/create-page-metadata";
+
+import { TelecommunicationsSearchDemo } from "./telecommunications-search-demo";
 
 export const generateMetadata = createSegmentMetadata(
   "telecommunications",
@@ -9,5 +12,9 @@ export const generateMetadata = createSegmentMetadata(
 );
 
 export default function TelecommunicationsPage({ params }: PageProps) {
-  return <SegmentPage params={params} translationKey="telecommunications" />;
+  return (
+    <SegmentPage params={params} translationKey="telecommunications">
+      <TelecommunicationsSearchDemo />
+    </SegmentPage>
+  );
 }

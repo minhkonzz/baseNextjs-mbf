@@ -10,3 +10,25 @@ export interface BuildSearchUrlOptions {
     | Record<string, string | string[] | undefined>;
   searchParams: SearchParamValueMap;
 }
+
+export interface SearchFilterOption {
+  label: string;
+  value: string;
+}
+
+// demo
+export interface TelecommunicationsSearchFilters {
+  keyword: string;
+  service: string;
+  status: string;
+  publishedAt: string;
+}
+
+export interface TelecommunicationsSearchResult {
+  id: string;
+  title: string;
+  description: string;
+  service: string;
+  status: string;
+  publishedAt: string;
+}
