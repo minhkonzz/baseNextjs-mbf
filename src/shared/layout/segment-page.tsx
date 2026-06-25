@@ -13,7 +13,7 @@ interface SegmentPageProps {
 
 export default async function SegmentPage({
   params,
-  translationKey = "telecommunications",
+  translationKey = "home",
   breadcrumbSegments,
   children,
 }: SegmentPageProps) {
