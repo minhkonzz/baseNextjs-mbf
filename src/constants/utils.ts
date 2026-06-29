@@ -1,7 +1,6 @@
 import type {
   BuildSearchUrlOptions,
   SearchFilterOption,
-  SearchParamValueMap,
   TelecommunicationsSearchFilters,
   TelecommunicationsSearchResult,
 } from "@/types/interfaces/search";

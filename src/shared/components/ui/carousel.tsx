@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/shared/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
 
 import { cn } from "@/lib/utils/index";
+
+import { MbfButton } from "..";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -196,12 +197,12 @@ CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
+  React.ComponentProps<typeof MbfButton>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
-    <Button
+    <MbfButton
       ref={ref}
       variant={variant}
       size={size}
@@ -218,19 +219,19 @@ const CarouselPrevious = React.forwardRef<
     >
       <ArrowLeftIcon className="h-4 w-4" />
       <span className="sr-only">Previous slide</span>
-    </Button>
+    </MbfButton>
   );
 });
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
+  React.ComponentProps<typeof MbfButton>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
-    <Button
+    <MbfButton
       ref={ref}
       variant={variant}
       size={size}
@@ -247,7 +248,7 @@ const CarouselNext = React.forwardRef<
     >
       <ArrowRightIcon className="h-4 w-4" />
       <span className="sr-only">Next slide</span>
-    </Button>
+    </MbfButton>
   );
 });
 CarouselNext.displayName = "CarouselNext";

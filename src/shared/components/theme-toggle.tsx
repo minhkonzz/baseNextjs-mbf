@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
 import { Toggle } from "@/shared/components/ui/toggle";
-import { Icons } from "@/shared/components/icons";
+import Icons from "@/shared/components/icons";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();

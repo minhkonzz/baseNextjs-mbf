@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   buildSearchUrl,
@@ -11,6 +11,7 @@ import {
   TELECOMMUNICATIONS_STATUS_OPTIONS,
 } from "@/constants/utils";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { MbfButton, MbfSelect } from "@/shared/components";
 import { format, isValid, parseISO } from "date-fns";
 import { CalendarIcon, RotateCcw, Search } from "lucide-react";
 
@@ -19,7 +20,6 @@ import type {
   TelecommunicationsSearchResult,
 } from "@/types/interfaces/search";
 import { Badge } from "@/shared/components/ui/badge";
-import { Button } from "@/shared/components/ui/button";
 import { Calendar } from "@/shared/components/ui/calendar";
 import {
   Card,
@@ -28,13 +28,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { Input } from "@/shared/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/shared/components/ui/popover";
-import MbfSelect from "@/shared/components/select";
+import { Input } from "@/shared/components/input";
 
 function createDraftFilters(
   currentSearchParams: string
@@ -103,12 +102,12 @@ export default function TelecommunicationsSearchDemo() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchParamsString = searchParams.toString();
-  const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
-  const [filters, setFilters] = React.useState<TelecommunicationsSearchFilters>(
-    () => createDraftFilters(searchParamsString)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [filters, setFilters] = useState<TelecommunicationsSearchFilters>(() =>
+    createDraftFilters(searchParamsString)
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     setFilters(createDraftFilters(searchParamsString));
   }, [searchParamsString]);
 
@@ -181,7 +180,8 @@ export default function TelecommunicationsSearchDemo() {
                   setFilters((current) => ({
                     ...current,
                     service: value,
-                }))}
+                  }))
+                }
               />
             </div>
 
@@ -189,7 +189,7 @@ export default function TelecommunicationsSearchDemo() {
               <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 Trạng thái
               </label>
-              <MbfSelect 
+              <MbfSelect
                 options={TELECOMMUNICATIONS_STATUS_OPTIONS}
                 placeholderTranslationKey="common.selectStatus"
                 selectedValue={filters.status}
@@ -208,14 +208,14 @@ export default function TelecommunicationsSearchDemo() {
               </label>
               <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                 <PopoverTrigger asChild>
-                  <Button
+                  <MbfButton
                     type="button"
                     variant="outline"
                     className="w-full justify-between font-normal"
                   >
                     <span>{formatSelectedDate(filters.publishedAt)}</span>
                     <CalendarIcon className="size-4" />
-                  </Button>
+                  </MbfButton>
                 </PopoverTrigger>
                 <PopoverContent align="start" className="w-auto p-0">
                   <Calendar
@@ -238,11 +238,11 @@ export default function TelecommunicationsSearchDemo() {
             </div>
 
             <div className="flex flex-wrap gap-3 lg:col-span-2">
-              <Button type="submit" className="gap-2">
+              <MbfButton type="submit" className="gap-2">
                 <Search className="size-4" />
                 Tìm kiếm
-              </Button>
-              <Button
+              </MbfButton>
+              <MbfButton
                 type="button"
                 variant="ghost"
                 className="gap-2"
@@ -250,7 +250,7 @@ export default function TelecommunicationsSearchDemo() {
               >
                 <RotateCcw className="size-4" />
                 Xóa bộ lọc
-              </Button>
+              </MbfButton>
             </div>
           </form>
         </CardContent>

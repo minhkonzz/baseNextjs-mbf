@@ -5,26 +5,12 @@ import { MOCK_ACCOUNTS } from "@/constants/auth";
 import AuthCard from "@/features/auth/components/auth-card";
 import useLogin from "@/features/auth/hooks/use-login";
 import { Link } from "@/i18n/navigation";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/shared/components/ui/alert";
-import { Button } from "@/shared/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { Spinner } from "@/shared/components/ui/spinner";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { MbfAlert, MbfButton, MbfInput, MbfSpinner } from "@/shared/components";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import useZodForm from "@/hooks/use-zod-form";
+import { Form as FormProvider } from "@/shared/components/ui/form";
 
 export default function LoginForm() {
   const t = useTranslations("auth.login");
@@ -44,19 +30,15 @@ export default function LoginForm() {
     [tValidation]
   );
 
-  type LoginValues = z.infer<typeof loginSchema>;
-
-  const form = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useZodForm({
+    schema: loginSchema,
     defaultValues: {
       usernameOrEmail: "",
       password: "",
     },
   });
 
-  const handleSubmit = (values: LoginValues) => {
-    login(values);
-  };
+  const { handleSubmit, control } = form;
 
   return (
     <AuthCard
@@ -82,70 +64,51 @@ export default function LoginForm() {
         </div>
       }
     >
-      <Form {...form}>
+      <FormProvider {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit)}
+          onSubmit={handleSubmit(login)}
           className="flex flex-col gap-4"
           autoComplete="off"
         >
           {error ? (
-            <Alert variant="destructive">
-              <AlertTitle>{tError("title")}</AlertTitle>
-              <AlertDescription>
-                {error instanceof Error ? error.message : tError("loginFailed")}
-              </AlertDescription>
-            </Alert>
+            <MbfAlert
+              title={tError("title")}
+              description={
+                error instanceof Error ? error.message : tError("loginFailed")
+              }
+            />
           ) : null}
 
-          <FormField
-            control={form.control}
+          <MbfInput
+            autoFocus
+            control={control}
             name="usernameOrEmail"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("usernameOrEmail")}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t("usernameOrEmailPlaceholder")}
-                    autoFocus
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("password")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("passwordPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label={t("usernameOrEmail")}
+            placeholder={t("usernameOrEmailPlaceholder")}
           />
 
-          <Button
+          <MbfInput
+            control={control}
+            type="password"
+            name="password"
+            label={t("password")}
+            placeholder={t("passwordPlaceholder")}
+          />
+
+          <MbfButton
             type="submit"
             className="mt-2 w-full bg-green-600 text-white hover:bg-green-700"
             disabled={isPending}
           >
             {isPending ? (
               <>
-                <Spinner className="text-white" />
+                <MbfSpinner className="text-white" />
                 {t("submitting")}
               </>
             ) : (
               t("submit")
             )}
-          </Button>
+          </MbfButton>
 
           <p className="rounded-lg border border-green-100 bg-green-50 p-3 text-center text-xs text-green-800 dark:border-green-900 dark:bg-green-950/40 dark:text-green-200">
             {t("mockHint", {
@@ -154,7 +117,7 @@ export default function LoginForm() {
             })}
           </p>
         </form>
-      </Form>
+      </FormProvider>
     </AuthCard>
   );
 }

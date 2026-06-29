@@ -4,26 +4,12 @@ import { useMemo } from "react";
 import AuthCard from "@/features/auth/components/auth-card";
 import useRegister from "@/features/auth/hooks/use-register";
 import { Link } from "@/i18n/navigation";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/shared/components/ui/alert";
-import { Button } from "@/shared/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { Spinner } from "@/shared/components/ui/spinner";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { MbfAlert, MbfButton, MbfInput, MbfSpinner } from "@/shared/components";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import useZodForm from "@/hooks/use-zod-form";
+import { Form as FormProvider } from "@/shared/components/ui/form";
 
 export default function RegisterForm() {
   const t = useTranslations("auth.register");
@@ -50,8 +36,8 @@ export default function RegisterForm() {
 
   type RegisterValues = z.infer<typeof registerSchema>;
 
-  const form = useForm<RegisterValues>({
-    resolver: zodResolver(registerSchema),
+  const form = useZodForm({
+    schema: registerSchema,
     defaultValues: {
       username: "",
       email: "",
@@ -60,7 +46,9 @@ export default function RegisterForm() {
     },
   });
 
-  const handleSubmit = ({ confirmPassword: _, ...values }: RegisterValues) => {
+  const { handleSubmit, control } = form;
+
+  const onRegister = ({ confirmPassword: _, ...values }: RegisterValues) => {
     register(values);
   };
 
@@ -80,108 +68,71 @@ export default function RegisterForm() {
         </span>
       }
     >
-      <Form {...form}>
+      <FormProvider {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit)}
+          onSubmit={handleSubmit(onRegister)}
           className="flex flex-col gap-4"
           autoComplete="off"
         >
           {error ? (
-            <Alert variant="destructive">
-              <AlertTitle>{tError("title")}</AlertTitle>
-              <AlertDescription>
-                {error instanceof Error
+            <MbfAlert
+              variant="destructive"
+              title={tError("title")}
+              description={
+                error instanceof Error
                   ? error.message
-                  : tError("registerFailed")}
-              </AlertDescription>
-            </Alert>
+                  : tError("registerFailed")
+              }
+            />
           ) : null}
 
-          <FormField
-            control={form.control}
+          <MbfInput
+            autoFocus
+            control={control}
             name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("username")}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t("usernamePlaceholder")}
-                    autoFocus
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("email")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder={t("emailPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("password")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("passwordPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("confirmPassword")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("confirmPasswordPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label={t("username")}
+            placeholder={t("usernamePlaceholder")}
           />
 
-          <Button
+          <MbfInput
+            control={control}
+            name="email"
+            label={t("email")}
+            placeholder={t("emailPlaceholder")}
+          />
+
+          <MbfInput
+            control={control}
+            name="password"
+            type="password"
+            label={t("password")}
+            placeholder={t("passwordPlaceholder")}
+          />
+
+          <MbfInput
+            control={control}
+            name="confirmPassword"
+            type="password"
+            label={t("confirmPassword")}
+            placeholder={t("confirmPasswordPlaceholder")}
+          />
+
+          <MbfButton
             type="submit"
             className="mt-2 w-full bg-green-600 text-white hover:bg-green-700"
             disabled={isPending}
           >
             {isPending ? (
               <>
-                <Spinner className="text-white" />
+                <MbfSpinner className="text-white" />
                 {t("submitting")}
               </>
             ) : (
               t("submit")
             )}
-          </Button>
+          </MbfButton>
         </form>
-      </Form>
+      </FormProvider>
     </AuthCard>
   );
 }

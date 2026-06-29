@@ -1,19 +1,20 @@
 "use client";
 
+import configs from "@/constants/config";
 import { SEGMENT_HOME_PATH } from "@/constants/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Segment } from "@/types/enums/segment";
-import { Button } from "@/shared/components/ui/button";
-import configs from "@/constants/config";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
+
+import { MbfButton } from "../components";
 
 export default function SegmentSwitcher() {
   const t = useTranslations("common");
@@ -30,10 +31,10 @@ export default function SegmentSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1">
+        <MbfButton variant="ghost" size="sm" className="gap-1">
           {currentSegment === Segment.PERSONAL ? t("personal") : t("business")}
           <ChevronDown className="size-4" />
-        </Button>
+        </MbfButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleSegmentChange(Segment.PERSONAL)}>

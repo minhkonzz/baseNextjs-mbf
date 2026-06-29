@@ -1,17 +1,18 @@
 "use client";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { Button } from "@/shared/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import { useLocale } from "next-intl";
+
+import { Locale } from "@/types/enums/locale";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-import { useLocale } from "next-intl";
 
-import { Locale } from "@/types/enums/locale";
+import { MbfButton } from "../components";
 
 const LOCALE_LABELS = {
   [Locale.VI]: "Tiếng Việt",
@@ -34,10 +35,10 @@ export default function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1">
+        <MbfButton variant="ghost" size="sm" className="gap-1">
           {LOCALE_LABELS[locale as Locale]}
           <ChevronDown className="size-4" />
-        </Button>
+        </MbfButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleLocaleChange(Locale.VI)}>

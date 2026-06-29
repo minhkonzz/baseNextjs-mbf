@@ -5,8 +5,6 @@ import LanguageSwitcher from "@/shared/layout/language-switcher";
 import SegmentSwitcher from "@/shared/layout/segment-switcher";
 import { useTranslations } from "next-intl";
 
-import { Button } from "@/shared/components/ui/button";
-
 interface FiveGShellProps {
   children: React.ReactNode;
 }
@@ -16,8 +14,7 @@ export default function FiveGShell({ children }: FiveGShellProps) {
   const tPage = useTranslations("pages.fiveGMobifone");
 
   return (
-    <>
-    </>
+    <></>
     // <div className="flex min-h-screen flex-col bg-gradient-to-b from-zinc-900 via-zinc-900 to-green-950 text-white">
     //   <header className="border-b border-white/10">
     //     <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">

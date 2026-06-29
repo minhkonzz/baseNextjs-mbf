@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -10,6 +9,9 @@ import {
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils/index";
+import { buttonVariants } from "@/shared/components/button";
+
+import { MbfButton } from "..";
 
 function Calendar({
   className,
@@ -21,7 +23,7 @@ function Calendar({
   components,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  buttonVariant?: React.ComponentProps<typeof MbfButton>["variant"];
 }) {
   const defaultClassNames = getDefaultClassNames();
 
@@ -189,7 +191,7 @@ function CalendarDayButton({
   }, [modifiers.focused]);
 
   return (
-    <Button
+    <MbfButton
       ref={ref}
       variant="ghost"
       size="icon"

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { routing } from "@/i18n/routing";
-import { Button } from "@/shared/components/ui/button";
+import { MbfButton } from "@/shared/components";
 
 export default function NotFound() {
   return (
@@ -10,14 +10,14 @@ export default function NotFound() {
         to buy that milk.
       </p>
       <div className="mx-auto mt-8 w-full max-w-lg md:mt-0">
-        <Button size="lg" className="w-full font-bold">
+        <MbfButton size="lg" className="w-full font-bold">
           <Link
             href={`/${routing.defaultLocale}`}
             className="pb-1 text-zinc-100 dark:text-zinc-800"
           >
             Find your dad.
           </Link>{" "}
-        </Button>
+        </MbfButton>
       </div>
     </div>
   );
